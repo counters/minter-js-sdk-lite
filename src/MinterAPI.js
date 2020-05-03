@@ -34,6 +34,19 @@ return get(url, callback);
 
     function get(url, callback) {
         // console.log('get '+url);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json'; // <<<
+        xhr.onload = function() {
+            if ( this.readyState==4 && this.status==200) {
+                console.log(this.response); // <<<
+                callback(this.response);
+            }
+        };
+        xhr.send();
+    }
+/*    function getOld(url, callback) {
+        // console.log('get '+url);
         jQuery.ajax({
             method: "GET",
             url: url
@@ -41,6 +54,6 @@ return get(url, callback);
             // console.log('get ajax '+url, data);
             callback(data);
         });
-    }
+    }*/
     return MinterApi;
 });
