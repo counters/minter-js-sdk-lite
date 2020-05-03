@@ -39,7 +39,7 @@ return get(url, callback);
         xhr.responseType = 'json'; // <<<
         xhr.onload = function() {
             if ( this.readyState==4 && this.status==200) {
-                console.log(this.response); // <<<
+                // console.log(this.response); // <<<
                 callback(this.response);
             }
         };
