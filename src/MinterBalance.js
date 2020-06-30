@@ -8,17 +8,19 @@ let MinterDefaultCoin='BIP';
 /*    function parseFloat($strFloat) {
         return($strFloat.float());
     }*/
-    function MinterBalance(array, callback, endCallback=null) {
+    function MinterBalance(array, endCallback, callback=null) {
         summ=0;
         numCoin=0;
         let oneBipMoney=false;
+        let maxVolume = 0;
+
         jQuery.each(array, function (key, value) {
             let valueF='';
          let FeeValue=minterUtil.convertFromPip(value);
 
             if (key!==MinterDefaultCoin) {
                 numCoin++;
-                getSumm(value, key, callback, endCallback);
+                getSumm(value, key, endCallback, callback);
                 valueF= parseFloat(FeeValue);
             } else {
                 if (summStr==='') summStr=FeeValue ;
@@ -26,10 +28,10 @@ let MinterDefaultCoin='BIP';
                 summ+=price;
                 valueF= price;
                 oneBipMoney=true;
-                if ( endCallback!=null) endCallback(price,MinterDefaultCoin, price);
+                if ( callback!=null) callback(price,MinterDefaultCoin, price);
             }
         });
-        if (oneBipMoney && numCoin===0 ) callback(summ);
+        if (oneBipMoney && numCoin===0 ) endCallback(summ);
     }
 
     function getSumm(amound, coin, callback, endCallback=null) {
