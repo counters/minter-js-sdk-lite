@@ -22,3 +22,14 @@ let MinterConvert=function(_name) {
     }
 }
 window.minterConvert = new MinterConvert()
+
+minterApi.getCoinInfo('ROBOT', function (result) {
+    console.log('MinterApi getCoinInfo Callback', result );
+}, null);
+minterApi.getCoinInfoById(65, function (result) {
+    console.log('MinterApi getCoinInfoById Callback', result );
+}, null);
+
+minterApi.getSellCoin('ROBOT', 'BIP', '1000000000000000000', function (result) {
+    console.log('MinterApi SellCoin Callback', result);
+});
