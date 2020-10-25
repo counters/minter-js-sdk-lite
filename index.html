@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
-    <script src="src/MinterAPI.js"></script>
-    <script src="src/MinterBalance.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="dist/js/MinterApi.bundle.js"></script>
+<!--    <script src="src/MinterAPI.js"></script>
+    <script src="src/Model/Address.js"></script>
+    <script src="src/Model/Coin.js"></script>
     <script src="https://unpkg.com/minterjs-util"></script>
+    <script>
+        let MinterConvert=function() {
+            let MinterPIP_STR =      '0.000000000000000001';
+            let MinterPIPINBIP_STR = '1000000000000000000';
+            this.fromPip = function (pip) {
+                return parseFloat(minterUtil.convertFromPip(pip))
+            }
+            this.toPip = function (amount) {
+                return minterUtil.convertToPip(amount)
+            }
+        }
+    </script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <h1>Minter JS SDK LITE</h1>
@@ -14,36 +28,25 @@
 
     jQuery(document).ready(function () {
 
+        // let minterApi = MinterApi('http://127.0.0.1:8843/v2');
+        let minterApi = MinterApi('https://node.knife.io/v2');
 
-        let minterApi = MinterApi('https://api.minter.one'); //mnt.funfasy.dev/v0
+        minterApi.getAddress('Mx0903ab168597a7c86ad0d4b72424b3632be0af1b', function (result) {
+            console.log('MinterApi Address Callback', result);
+            console.log(result.getBalance() );
+            console.log(result.getTotal() );
+            console.log(result.getDelegated() );
+        }, true, null);
 
-        minterApi(minterApi.Address, 'Mxeee37fedf95e5ee65ce6e3ad1cbcfa9055932311', null, function (result) {
-            let array = result.result.balance;
-            console.log('MinterApi Address Callback', result, array);
+        minterApi.getSellCoin('ROBOT', 'BIP', '1000000000000000000', function (result) {
+            console.log('MinterApi SellCoin Callback', result);
         });
-
-        MinterBalance.api = minterApi;
-        minterApi(minterApi.Address, 'Mxeee37fedf95e5ee65ce6e3ad1cbcfa9055932311', null, function (result) {
-            let array = result.result.balance;
-            console.log('MinterApi Address Callback', /*result, */array);
-            MinterBalance(array,  function (value) {
-                console.log("End all balance", value);
-            }, function (amound, coin, price) {
-                console.log(amound + ' ' + coin + ' ' + price);
-            });
-
-        }, 0);
-
-        minterApi(minterApi.CoinInfo, 'ROBOT', null, function (result) {
-            console.log('MinterApi CoinInfo Callback', result);
-        });
-
-        let params = {coin_to_sell:'BIP', coin_to_buy:'ROBOT'}
-        minterApi(minterApi.SellCoin, '1000000000000000000', params, function (result) {
-            // let array = result.result.balance;
-            console.log('MinterApi SellCoin Callback', result, minterUtil.convertFromPip(result.result.will_get));
-        });
-
+        minterApi.getCoinInfo('ROBOT', function (result) {
+            console.log('MinterApi getCoinInfo Callback', result );
+        }, null);
+        minterApi.getCoinInfoById(65, function (result) {
+            console.log('MinterApi getCoinInfoById Callback', result );
+        }, null);
 
 
     });
